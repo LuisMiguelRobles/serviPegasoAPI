@@ -1,6 +1,6 @@
 using System;
 
-namespace ServiPegasoAPI
+namespace API
 {
     public class WeatherForecast
     {
