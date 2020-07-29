@@ -3,7 +3,7 @@
     using System;
     using Microsoft.AspNetCore.Identity;
 
-    public class User : IdentityUser
+    public class AppUser : IdentityUser
     {
         public string UserFullName { get; set; }
         public bool UserStatus { get; set; }
