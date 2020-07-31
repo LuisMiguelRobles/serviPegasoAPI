@@ -1,29 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Application.Interfaces;
-using Application.Payment.Request;
-using Domain.Models;
-using Domain.Models.Enums;
-using MediatR;
-using Persistence;
-
-namespace Application.Payment.Commands
+﻿namespace Application.Payment.Commands
 {
+    using Application.Interfaces;
+    using Application.Payment.Request;
+    using FluentValidation;
+    using MediatR;
+    using Persistence;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     public class Create
     {
         public class Command: IRequest
         {
-            //public DateTime PaymentDate { get; set; }
-            //public PaymentStatus PaymentStatus { get; set; }
+  
             //public Guid OrderId { get; set; }
             public string Token { get; set; }
             public float Amount { get; set; }
             public string PayerEmail { get; set; }
             public string PaymentMethodId { get; set; }
             public string Description { get; set; }
+        }
+
+        public class CommandValidator: AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Token).NotEmpty();
+                RuleFor(x => x.Amount).NotEmpty();
+                RuleFor(x => x.PayerEmail).NotEmpty();
+                RuleFor(x => x.PaymentMethodId).NotEmpty();
+                RuleFor(x => x.Description).NotEmpty();
+            }
         }
 
         public class Handler : IRequestHandler<Command>

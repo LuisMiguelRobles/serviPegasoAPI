@@ -1,17 +1,20 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentValidation;
-using MediatR;
-using Persistence;
-
-namespace Application.Deliverer.Commands
+﻿namespace Application.Deliverer.Commands
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentValidation;
+    using MediatR;
+    using Persistence;
+
     public class Create
     {
         public class Command : IRequest
         {
-
+            public string DelivererFullName { get; set; }
+            public string DelivererEmail { get; set; }
+            public string DelivererPhoneNumber { get; set; }
+            public DateTime DelivererBirthDate { get; set; }
         }
 
 
@@ -19,7 +22,10 @@ namespace Application.Deliverer.Commands
         {
             public CommandValidator()
             {
-
+                RuleFor(x => x.DelivererFullName).NotEmpty();
+                RuleFor(x => x.DelivererEmail).NotEmpty();
+                RuleFor(x => x.DelivererPhoneNumber).NotEmpty();
+                RuleFor(x => x.DelivererBirthDate).NotEmpty();
             }
         }
 

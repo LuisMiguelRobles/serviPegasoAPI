@@ -1,13 +1,13 @@
-﻿using MediatR;
-using Persistence;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Application.Deliverer.Queries
+﻿namespace Application.Deliverer.Queries
 {
+    using MediatR;
+    using Persistence;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
     using Domain.Models;
+
     public class List
     {
         public class Query : IRequest<List<Deliverer>>

@@ -1,17 +1,20 @@
-﻿using FluentValidation;
-using MediatR;
-using Persistence;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Application.Customer.Commands
+﻿namespace Application.Customer.Commands
 {
+    using FluentValidation;
+    using MediatR;
+    using Persistence;
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     public class Create
     {
         public class Command : IRequest
         {
-
+            public string CustomerFullName { get; set; }
+            public string CustomerEmail { get; set; }
+            public string CustomerPhoneNumber { get; set; }
+            public DateTime CustomerBirthDate { get; set; }
         }
 
 
@@ -19,6 +22,10 @@ namespace Application.Customer.Commands
         {
             public CommandValidator()
             {
+                RuleFor(x => x.CustomerFullName).NotEmpty();
+                RuleFor(x => x.CustomerEmail).NotEmpty();
+                RuleFor(x => x.CustomerPhoneNumber).NotEmpty();
+                RuleFor(x => x.CustomerBirthDate).NotEmpty();
 
             }
         }

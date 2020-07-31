@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
-
-namespace Application.Customer.Queries
+﻿namespace Application.Customer.Queries
 {
     using Domain.Models;
+    using MediatR;
+    using Persistence;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     public class List
     {
         public class Query : IRequest<List<Customer>>

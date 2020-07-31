@@ -1,17 +1,20 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentValidation;
-using MediatR;
-using Persistence;
-
-namespace Application.Product.Commands
+﻿namespace Application.Product.Commands
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentValidation;
+    using MediatR;
+    using Persistence;
+
     public class Create
     {
         public class Command : IRequest
         {
-            
+            public string ProductName { get; set; }
+            public double ProductPrice { get; set; }
+            public string ProductDescription { get; set; }
+            public Guid CategoryId { get; set; }
         }
 
 
@@ -19,7 +22,10 @@ namespace Application.Product.Commands
         {
             public CommandValidator()
             {
-                
+                RuleFor(x => x.ProductName).NotEmpty();
+                RuleFor(x => x.ProductPrice).NotEmpty();
+                RuleFor(x => x.ProductDescription).NotEmpty();
+                RuleFor(x => x.CategoryId).NotEmpty();
             }
         }
 

@@ -1,17 +1,18 @@
-﻿using FluentValidation;
-using MediatR;
-using Persistence;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Application.Delivery.Commands
+﻿namespace Application.Delivery.Commands
 {
+    using FluentValidation;
+    using MediatR;
+    using Persistence;
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     public class Create
     {
         public class Command : IRequest
         {
-
+            public Guid OrderId { get; set; }
+            public Guid DelivererId { get; set; }
         }
 
 
@@ -19,7 +20,8 @@ namespace Application.Delivery.Commands
         {
             public CommandValidator()
             {
-
+                RuleFor(x => x.DelivererId).NotEmpty();
+                RuleFor(x => x.OrderId).NotEmpty();
             }
         }
 
