@@ -1,9 +1,8 @@
 ﻿namespace Application.Auth.Commands
 {
-    using Application.Auth.Validators;
-    using Application.Interfaces;
     using Domain.Auth;
     using FluentValidation;
+    using Interfaces;
     using MediatR;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
@@ -12,6 +11,7 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using Validators;
 
     public class Register
     {

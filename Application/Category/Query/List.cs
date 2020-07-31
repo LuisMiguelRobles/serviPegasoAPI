@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
-
-namespace Application.Category.Query
+﻿namespace Application.Category.Query
 {
+    using MediatR;
+    using Microsoft.EntityFrameworkCore;
+    using Persistence;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Domain.Models;
     public class List
     {
-        public class Query : IRequest<List<Domain.Models.Category>>
+        public class Query : IRequest<List<Category>>
         {
         }
 
-        public class Handler : IRequestHandler<Query, List<Domain.Models.Category>>
+        public class Handler : IRequestHandler<Query, List<Category>>
         {
 
             private readonly DataContext _context;

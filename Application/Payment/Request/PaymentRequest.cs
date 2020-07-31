@@ -7,5 +7,6 @@
         public string PayerEmail { get; set; }
         public string PaymentMethodId { get; set; }
         public string Description { get; set; }
+        public int Installments { get; set; }
     }
 }

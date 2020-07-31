@@ -1,17 +1,17 @@
 ﻿namespace API.Controllers
 {
-    using System.Collections.Generic;
-    using Application.Category.Query;
+    using Application.Product.Commands;
     using Domain.Models;
-    using System.Threading.Tasks;
-    using Application.Category.Commands;
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Application.Product.Quieries;
 
-    public class CategoryController : BaseController
+    public class ProductController : BaseController
     {
         [HttpGet]
-        public async Task<ActionResult<List<Category>>> List()
+        public async Task<ActionResult<List<Product>>> List()
         {
             return await Mediator.Send(new List.Query());
         }

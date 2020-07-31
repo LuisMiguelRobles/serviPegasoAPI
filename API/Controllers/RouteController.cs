@@ -1,12 +1,13 @@
 ﻿namespace API.Controllers
 {
-    using Application.Payment.Commands;
+    using Application.Route.Commands;
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
 
-    public class PaymentController : BaseController
+    public class RouteController: BaseController
     {
+
         [HttpPost]
         public async Task<ActionResult<Unit>> Create(Create.Command command)
         {
