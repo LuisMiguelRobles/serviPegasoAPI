@@ -54,6 +54,18 @@
 --			VALUES(@orderId, @orderTotal, @orderDate,@orderStatus,@customerId)
 --	END
 
+--CREATE PROCEDURE [dbo].[CreateOrderDetail]
+--	@orderDetailId nvarchar(MAX),
+--	@orderDetailProductAmount int,
+--	@orderDetailSubTotal float,
+--	@productId nvarchar(MAX),
+--	@orderId nvarchar(MAX)
+--	AS
+--	BEGIN
+--		INSERT INTO [dbo].OrderDetails(OrderDetailId, OrderDetailProductAmount, OrderDetailSubTotal, ProductId, OrderId)
+--		VALUES(@orderDetailId, @orderDetailProductAmount,@orderDetailSubTotal, @productId, @orderId)
+--	END
+
 --CREATE PROCEDURE [dbo].[CreateCustomer]
 --	@customerId nvarchar(MAX),
 --	@customerFullName nvarchar(80),
