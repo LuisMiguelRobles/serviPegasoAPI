@@ -7,6 +7,7 @@
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
 
     public class List
     {
@@ -26,7 +27,10 @@
 
             public async Task<List<Product>> Handle(Query request, CancellationToken cancellationToken)
             {
-                throw new Exception();
+                var products =
+                    await _context.Products.FromSqlRaw("GetAllProducts").ToListAsync(cancellationToken);
+
+                return products;
             }
 
         }

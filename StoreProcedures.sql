@@ -88,3 +88,11 @@
 	--	select * 
 	--		from [dbo].[Categories] 
 	--END
+
+	CREATE PROCEDURE [dbo].[GetAllProducts]
+	AS
+	BEGIN
+		SET NOCOUNT ON;
+		select * 
+			from [dbo].[Products] 
+	END
