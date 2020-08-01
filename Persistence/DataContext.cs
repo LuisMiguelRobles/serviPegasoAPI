@@ -68,8 +68,6 @@
             builder.Entity<Deliverer>()
                 .HasMany(o => o.Deliveries)
                 .WithOne(p => p.Deliverer);
-
-            
         }
     }
 }

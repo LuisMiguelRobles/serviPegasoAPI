@@ -12,7 +12,8 @@ namespace Domain.Models
         public bool ProductStatus { get; set; }
         public string ProductDescription { get; set; }
         public Category ProductCategory { get; set; }
+        public string ProductImage { get; set; }
         public Guid CategoryId { get; set; }
-        public ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
-
-namespace Application.Category.Commands
+﻿namespace Application.Category.Commands
 {
+    using MediatR;
+    using Microsoft.EntityFrameworkCore;
+    using Persistence;
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     public class Create
     {
         public class Command: IRequest
@@ -30,9 +28,10 @@ namespace Application.Category.Commands
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var success = await Task.FromResult(_context.Database.ExecuteSqlCommand("CreateCategory @p0, @p1, @p2, @p3", Guid.NewGuid(), request.CategoryName, request.CategoryDescription, request.CategoryStatus));
+                var sqlParams = new object[] { Guid.NewGuid(), request.CategoryName, request.CategoryDescription, request.CategoryStatus };
+                var success = await _context.Database.ExecuteSqlRawAsync("CreateCategory @p0, @p1, @p2, @p3", sqlParams) == 1;
 
-                if(success == 1) return Unit.Value;
+                if(success) return Unit.Value;
                 throw new Exception("Problem saving changes");
             }
         }

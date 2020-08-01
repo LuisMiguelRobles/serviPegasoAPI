@@ -108,6 +108,7 @@ namespace Persistence.Migrations
                     ProductPrice = table.Column<double>(nullable: false),
                     ProductStatus = table.Column<bool>(nullable: false),
                     ProductDescription = table.Column<string>(nullable: true),
+                    ProductImage = table.Column<string>(nullable: true),
                     CategoryId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
