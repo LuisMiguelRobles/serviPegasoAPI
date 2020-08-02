@@ -19,6 +19,7 @@
     {
         public class Command : IRequest<User>
         {
+            public string UserName { get; set; }
             public string FullName { get; set; }
             public string Email { get; set; }
             public string Password { get; set; }
@@ -65,6 +66,7 @@
                 
                 var user = new AppUser
                 {
+                    UserName = request.UserName,
                     Email = request.Email,
                     UserFullName = request.FullName,
                     RoleId = role.RoleId,
