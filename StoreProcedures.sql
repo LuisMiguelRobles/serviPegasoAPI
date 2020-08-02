@@ -78,16 +78,28 @@
 --			VALUES(@customerId, @customerFullName, @customerEmail,@customerPhoneNumber,@customerBirthDay)
 --	END
 
-	CREATE PROCEDURE [dbo].[CreateDeliverer]
-	@delivererId nvarchar(MAX),
-	@delivererFullName nvarchar(80),
-	@delivererEmail nvarchar(80),
-	@delivererPhoneNumber nvarchar(25),
-	@delivererBirthDay datetime
+	--CREATE PROCEDURE [dbo].[CreateDeliverer]
+	--@delivererId nvarchar(MAX),
+	--@delivererFullName nvarchar(80),
+	--@delivererEmail nvarchar(80),
+	--@delivererPhoneNumber nvarchar(25),
+	--@delivererBirthDay datetime
+	--AS
+	--BEGIN
+	--	INSERT INTO [dbo].Deliverers(DelivererId, DelivererFullName, DelivererEmail, DelivererPhoneNumber, DelivererBirthDate)
+	--		VALUES(@delivererId, @delivererFullName, @delivererEmail,@delivererPhoneNumber,@delivererBirthDay)
+	--END
+
+	CREATE PROCEDURE [dbo].[RegisterPayment]
+	@paymentId nvarchar(MAX),
+	@paymentValue float,
+	@paymentDate DateTime,
+	@paymentStatus int,
+	@orderId nvarchar(MAX)
 	AS
 	BEGIN
-		INSERT INTO [dbo].Deliverers(DelivererId, DelivererFullName, DelivererEmail, DelivererPhoneNumber, DelivererBirthDate)
-			VALUES(@delivererId, @delivererFullName, @delivererEmail,@delivererPhoneNumber,@delivererBirthDay)
+		INSERT INTO [dbo].Payments(PaymentId, PaymentValue, PaymentDate, PaymentStatus, OrderId)
+			VALUES(@paymentId, @paymentValue, @paymentDate,@paymentStatus,@orderId)
 	END
 
 
