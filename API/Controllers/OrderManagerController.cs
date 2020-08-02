@@ -1,4 +1,6 @@
-﻿namespace API.Controllers
+﻿using Application.OrderManager;
+
+namespace API.Controllers
 {
     using Application.OrderManager.Commands;
     using MediatR;
@@ -8,7 +10,7 @@
     public class OrderManagerController : BaseController
     {
         [HttpPost]
-        public async Task<ActionResult<Unit>> Create(Create.Command command)
+        public async Task<ActionResult<OrderResponse>> Create(Create.Command command)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

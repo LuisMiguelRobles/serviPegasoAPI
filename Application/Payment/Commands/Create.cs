@@ -1,10 +1,14 @@
-﻿namespace Application.Payment.Commands
+﻿using Domain.Models.Enums;
+using Microsoft.EntityFrameworkCore;
+
+namespace Application.Payment.Commands
 {
     using Application.Interfaces;
     using Application.Payment.Request;
     using FluentValidation;
     using MediatR;
     using Persistence;
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -13,7 +17,7 @@
         public class Command: IRequest
         {
   
-            //public Guid OrderId { get; set; }
+            public Guid OrderId { get; set; }
             public string Token { get; set; }
             public float Amount { get; set; }
             public string PayerEmail { get; set; }
@@ -25,6 +29,7 @@
         {
             public CommandValidator()
             {
+                RuleFor(x => x.OrderId).NotEmpty();
                 RuleFor(x => x.Token).NotEmpty();
                 RuleFor(x => x.Amount).NotEmpty();
                 RuleFor(x => x.PayerEmail).NotEmpty();
@@ -45,9 +50,15 @@
             }
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                // var success = _context.Payments.Add()
+                
                 await _payment.AddPayment(GetPaymentRequest(request));
-                return Unit.Value;
+                var sqlParams = new object[] {Guid.NewGuid(),request.Amount, DateTime.Now,PaymentStatus.Pending, request.OrderId};
+                var success = await _context.Database.ExecuteSqlRawAsync("RegisterPayment @p0, @p1, @p2, @p3, @p4", sqlParams) == 1;
+                
+                if(success)
+                    return Unit.Value;
+
+                throw new Exception("Problem saving changes");
             }
 
 

@@ -12,7 +12,7 @@
 
     public class Create
     {
-        public class Command : IRequest
+        public class Command : IRequest<OrderResponse>
         {
             public string CustomerEmail { get; set; }
             public float OrderTotal { get; set; }
@@ -20,7 +20,7 @@
             
         }
 
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Command, OrderResponse>
         {
             private readonly DataContext _context;
 
@@ -29,7 +29,7 @@
                 _context = context;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<OrderResponse> Handle(Command request, CancellationToken cancellationToken)
             {
                 var customer = await _context.Customers.SingleOrDefaultAsync(x => x.CustomerEmail == request.CustomerEmail, cancellationToken);
                 var orderId = Guid.NewGuid();
@@ -43,14 +43,18 @@
                     request.OrderDetails.ForEach(x =>
                         {
                             var sqlParamsOrderDetail = new object[] { Guid.NewGuid(), x.OrderDetailProductAmount, x.OrderDetailSubTotal, x.ProductId, orderId };
-                            _context.Database.ExecuteSqlRaw("CreateOrderDetail @p0, @p1, @p2, @p3, @p" , sqlParamsOrderDetail);
+                            _context.Database.ExecuteSqlRaw("CreateOrderDetail @p0, @p1, @p2, @p3, @p4", sqlParamsOrderDetail);
                         });
 
-                    return Unit.Value;
+                    return new OrderResponse
+                    {
+                        OrderId = orderId
+                    };
                 }
 
                 throw new Exception("Problem saving changes");
             }
+
         }
     }
 }
