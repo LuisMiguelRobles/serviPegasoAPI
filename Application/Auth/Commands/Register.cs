@@ -61,6 +61,11 @@
                     throw new RestException(HttpStatusCode.BadRequest, new { Email = "Email already exits" });
                 }
 
+                if (await _context.Users.Where(x => x.UserName == request.UserName)
+                    .AnyAsync(cancellationToken: cancellationToken))
+                {
+                    throw new RestException(HttpStatusCode.BadRequest, new { Username = "Username already exits" });
+                }
 
                 var role = _context.Roles.SingleOrDefault(x => x.RoleName.Equals(request.RoleType));
                 

@@ -1,4 +1,6 @@
-﻿namespace Application.Auth.Queries
+﻿using Persistence;
+
+namespace Application.Auth.Queries
 {
     using Application.Errors;
     using Application.Interfaces;
@@ -30,12 +32,14 @@
 
         public class Handler : IRequestHandler<Query, User>
         {
+            private readonly DataContext _context;
             private readonly SignInManager<AppUser> _signInManager;
             private readonly IJwtGenerator _jwtGenerator;
             private readonly UserManager<AppUser> _userManager;
 
-            public Handler(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IJwtGenerator jwtGenerator)
+            public Handler(DataContext context, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IJwtGenerator jwtGenerator)
             {
+                _context = context;
                 _signInManager = signInManager;
                 _jwtGenerator = jwtGenerator;
                 _userManager = userManager;
@@ -50,14 +54,14 @@
                 }
 
                 var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
-
+                var role = await _context.Roles.FindAsync(user.RoleId);
                 if (result.Succeeded)
                 {
                     return new User
                     {
                         Token = _jwtGenerator.CreateToken(user),
                         UserFullName = user.UserFullName,
-                        Role = user.UserRole.RoleName,
+                        Role = role.RoleName,
                         Email = user.Email
                         
                     };
