@@ -1,5 +1,6 @@
 ﻿namespace Application.Auth.Commands
 {
+    using Application.Errors;
     using Domain.Auth;
     using FluentValidation;
     using Interfaces;
@@ -9,6 +10,7 @@
     using Persistence;
     using System;
     using System.Linq;
+    using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
     using Validators;
@@ -17,22 +19,24 @@
     {
         public class Command : IRequest<User>
         {
-            public string DisplayName { get; set; }
             public string Username { get; set; }
             public string Email { get; set; }
             public string Password { get; set; }
-            public Guid RoleId { get; set; }
+            public string PhoneNumber { get; set; }
+            public DateTime BirthDay { get; set; }
+            public string RoleType { get; set; }
         }
 
         public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator()
             {
-                RuleFor(x => x.DisplayName).NotEmpty();
+                
                 RuleFor(x => x.Username).NotEmpty();
                 RuleFor(x => x.Email).NotEmpty().EmailAddress();
                 RuleFor(x => x.Password).Password();
-                RuleFor(x => x.RoleId).NotEmpty();
+                RuleFor(x => x.PhoneNumber).NotEmpty();
+                RuleFor(x => x.BirthDay).NotEmpty();
             }
         }
 
@@ -53,35 +57,63 @@
                 if (await _context.Users.Where(x => x.Email == request.Email)
                     .AnyAsync(cancellationToken))
                 {
-                    // throw new RestException(HttpStatusCode.BadRequest, new { Email = "Email already exits" });
+                    throw new RestException(HttpStatusCode.BadRequest, new { Email = "Email already exits" });
                 }
 
                 if (await _context.Users.Where(x => x.UserName == request.Username)
                     .AnyAsync(cancellationToken))
                 {
-                    // throw new RestException(HttpStatusCode.BadRequest, new { Username = "Username already exits" });
+                    throw new RestException(HttpStatusCode.BadRequest, new { Username = "Username already exits" });
                 }
 
+                var role = _context.Roles.SingleOrDefault(x => x.RoleName.Equals(request.RoleType));
+                
                 var user = new AppUser
                 {
                     Email = request.Email,
                     UserName = request.Username,
-                    RoleId = request.RoleId
+                    RoleId = role.RoleId,
+                    UserStatus = true
                 };
 
                 var result = await _userManager.CreateAsync(user, request.Password);
 
                 if (result.Succeeded)
                 {
+                    this.RegisterUser(request, _context);
+
+
                     return new User
                     {
                         Token = _jwtGenerator.CreateToken(user),
                         Username = user.UserName,
-                        Role = _context.Roles.Find(user.RoleId).RoleName
+                        Role = role.RoleName,
+                        Email = user.Email
+
                     };
                 };
+                
                 throw new Exception("Problem creating user");
             }
+
+            private void RegisterUser(Command request, DataContext context)
+            {
+
+                var sqlParamsUser = new object[] { Guid.NewGuid(), request.Username, request.Email, request.PhoneNumber, request.BirthDay };
+
+                switch (request.RoleType)
+                {
+                    case nameof(RoleType.client):
+                        context.Database.ExecuteSqlRaw("CreateCustomer @p0,@p1, @p2, @p3, @p4", sqlParamsUser);
+                        break;
+                    case nameof(RoleType.deliverer):
+                        context.Database.ExecuteSqlRaw("CreateDeliverer @p0,@p1, @p2, @p3, @p4", sqlParamsUser);
+                        break;
+                }
+            }
+
         }
+
+        
     }
 }

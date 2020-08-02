@@ -6,7 +6,7 @@
 
     public class OrderRequest
     {
-        public Guid CustomerId { get; set; }
+        public string CustomerEmail { get; set; }
         public List<OrderDetail> OrderDetails { get; set; }
 
         public OrderRequest()

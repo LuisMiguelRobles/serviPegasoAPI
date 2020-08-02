@@ -1,13 +1,15 @@
 ﻿namespace Application.Auth.Queries
 {
+    using Application.Errors;
     using Application.Interfaces;
     using Domain.Auth;
     using FluentValidation;
     using MediatR;
     using Microsoft.AspNetCore.Identity;
-    using System;
+    using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
+
 
     public class Login
     {
@@ -44,7 +46,7 @@
 
                 if (user == null)
                 {
-                    // throw new RestException(HttpStatusCode.Unauthorized);
+                    throw new RestException(HttpStatusCode.Unauthorized);
                 }
 
                 var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
@@ -53,16 +55,15 @@
                 {
                     return new User
                     {
-                        Id = user.Id,
                         Token = _jwtGenerator.CreateToken(user),
                         Username = user.UserName,
-                        Role = user.UserRole.RoleName
+                        Role = user.UserRole.RoleName,
+                        Email = user.Email
                         
                     };
                 }
 
-                // throw new RestException(HttpStatusCode.Unauthorized);
-                throw new Exception();
+                throw new RestException(HttpStatusCode.Unauthorized);
             }
         }
 

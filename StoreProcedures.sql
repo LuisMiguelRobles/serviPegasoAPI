@@ -78,6 +78,18 @@
 --			VALUES(@customerId, @customerFullName, @customerEmail,@customerPhoneNumber,@customerBirthDay)
 --	END
 
+	CREATE PROCEDURE [dbo].[CreateDeliverer]
+	@delivererId nvarchar(MAX),
+	@delivererFullName nvarchar(80),
+	@delivererEmail nvarchar(80),
+	@delivererPhoneNumber nvarchar(25),
+	@delivererBirthDay datetime
+	AS
+	BEGIN
+		INSERT INTO [dbo].Deliverers(DelivererId, DelivererFullName, DelivererEmail, DelivererPhoneNumber, DelivererBirthDate)
+			VALUES(@delivererId, @delivererFullName, @delivererEmail,@delivererPhoneNumber,@delivererBirthDay)
+	END
+
 
 --Listar---
 
@@ -86,13 +98,13 @@
 	--BEGIN
 	--	SET NOCOUNT ON;
 	--	select * 
-	--		from [dbo].[Categories] 
+	--		from [dbo].[Categories] order by CategoryName
 	--END
 
-	CREATE PROCEDURE [dbo].[GetAllProducts]
-	AS
-	BEGIN
-		SET NOCOUNT ON;
-		select * 
-			from [dbo].[Products] 
-	END
+	--CREATE PROCEDURE [dbo].[GetAllProducts]
+	--AS
+	--BEGIN
+	--	SET NOCOUNT ON;
+	--	select * 
+	--		from [dbo].[Products] order by ProductName
+	--END
