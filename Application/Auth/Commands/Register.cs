@@ -19,7 +19,7 @@
     {
         public class Command : IRequest<User>
         {
-            public string Username { get; set; }
+            public string FullName { get; set; }
             public string Email { get; set; }
             public string Password { get; set; }
             public string PhoneNumber { get; set; }
@@ -32,7 +32,7 @@
             public CommandValidator()
             {
                 
-                RuleFor(x => x.Username).NotEmpty();
+                RuleFor(x => x.FullName).NotEmpty();
                 RuleFor(x => x.Email).NotEmpty().EmailAddress();
                 RuleFor(x => x.Password).Password();
                 RuleFor(x => x.PhoneNumber).NotEmpty();
@@ -60,18 +60,13 @@
                     throw new RestException(HttpStatusCode.BadRequest, new { Email = "Email already exits" });
                 }
 
-                if (await _context.Users.Where(x => x.UserName == request.Username)
-                    .AnyAsync(cancellationToken))
-                {
-                    throw new RestException(HttpStatusCode.BadRequest, new { Username = "Username already exits" });
-                }
 
                 var role = _context.Roles.SingleOrDefault(x => x.RoleName.Equals(request.RoleType));
                 
                 var user = new AppUser
                 {
                     Email = request.Email,
-                    UserName = request.Username,
+                    UserFullName = request.FullName,
                     RoleId = role.RoleId,
                     UserStatus = true
                 };
@@ -86,7 +81,7 @@
                     return new User
                     {
                         Token = _jwtGenerator.CreateToken(user),
-                        Username = user.UserName,
+                        UserFullName = user.UserFullName,
                         Role = role.RoleName,
                         Email = user.Email
 
@@ -99,7 +94,7 @@
             private void RegisterUser(Command request, DataContext context)
             {
 
-                var sqlParamsUser = new object[] { Guid.NewGuid(), request.Username, request.Email, request.PhoneNumber, request.BirthDay };
+                var sqlParamsUser = new object[] { Guid.NewGuid(), request.FullName, request.Email, request.PhoneNumber, request.BirthDay };
 
                 switch (request.RoleType)
                 {

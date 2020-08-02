@@ -28,7 +28,7 @@
 
                 return new User
                 {
-                    Username = user.UserName,
+                    UserFullName = user.UserFullName,
                     Token = _jwtGenerator.CreateToken(user),
                     Email = user.Email
                 };

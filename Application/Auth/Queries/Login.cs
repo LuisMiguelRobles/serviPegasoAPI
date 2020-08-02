@@ -56,7 +56,7 @@
                     return new User
                     {
                         Token = _jwtGenerator.CreateToken(user),
-                        Username = user.UserName,
+                        UserFullName = user.UserFullName,
                         Role = user.UserRole.RoleName,
                         Email = user.Email
                         
