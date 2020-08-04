@@ -6,6 +6,6 @@ namespace Application.Interfaces
 
     public interface IPayment
     {
-        Task AddPayment(PaymentRequest paymentRequest);
+        Task<string> AddPayment(PaymentRequest paymentRequest);
     }
 }

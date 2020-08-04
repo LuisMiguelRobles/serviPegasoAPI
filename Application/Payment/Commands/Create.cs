@@ -1,7 +1,4 @@
-﻿using Domain.Models.Enums;
-using Microsoft.EntityFrameworkCore;
-
-namespace Application.Payment.Commands
+﻿namespace Application.Payment.Commands
 {
     using Application.Interfaces;
     using Application.Payment.Request;
@@ -11,6 +8,8 @@ namespace Application.Payment.Commands
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    using Domain.Models.Enums;
+    using Microsoft.EntityFrameworkCore;
 
     public class Create
     {
@@ -51,10 +50,15 @@ namespace Application.Payment.Commands
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
                 
-                await _payment.AddPayment(GetPaymentRequest(request));
+                var paymentStatus = _payment.AddPayment(GetPaymentRequest(request)).Result;
                 var sqlParams = new object[] {Guid.NewGuid(),request.Amount, DateTime.Now,PaymentStatus.Pending, request.OrderId};
                 var success = await _context.Database.ExecuteSqlRawAsync("RegisterPayment @p0, @p1, @p2, @p3, @p4", sqlParams) == 1;
-                
+
+                if (paymentStatus.Equals("approved"))
+                {
+                    _context.Database.ExecuteSqlRaw("UpdateOrderStatus @p0, @p1", request.OrderId, OrderStatus.Paid);
+                }
+
                 if(success)
                     return Unit.Value;
 

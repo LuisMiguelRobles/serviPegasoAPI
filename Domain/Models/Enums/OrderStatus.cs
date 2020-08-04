@@ -4,6 +4,8 @@
     {
         Preparing,
         OnTheWay,
-        Delivered
+        Delivered,
+        Paid
+
     }
 }

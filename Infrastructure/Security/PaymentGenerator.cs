@@ -8,7 +8,7 @@
 
     public class PaymentGenerator : IPayment
     {
-        public Task AddPayment(PaymentRequest request)
+        public Task<string> AddPayment(PaymentRequest request)
         {
             var sdk = new MercadoPago.SDK
             {
@@ -30,7 +30,7 @@
 
             payment.Save();
 
-            return Task.FromResult(payment.Status);
+            return Task.FromResult(payment.Status.ToString());
         }
     }
 }

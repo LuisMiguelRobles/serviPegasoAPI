@@ -90,17 +90,17 @@
 	--		VALUES(@delivererId, @delivererFullName, @delivererEmail,@delivererPhoneNumber,@delivererBirthDay)
 	--END
 
-	CREATE PROCEDURE [dbo].[RegisterPayment]
-	@paymentId nvarchar(MAX),
-	@paymentValue float,
-	@paymentDate DateTime,
-	@paymentStatus int,
-	@orderId nvarchar(MAX)
-	AS
-	BEGIN
-		INSERT INTO [dbo].Payments(PaymentId, PaymentValue, PaymentDate, PaymentStatus, OrderId)
-			VALUES(@paymentId, @paymentValue, @paymentDate,@paymentStatus,@orderId)
-	END
+	--CREATE PROCEDURE [dbo].[RegisterPayment]
+	--@paymentId nvarchar(MAX),
+	--@paymentValue float,
+	--@paymentDate DateTime,
+	--@paymentStatus int,
+	--@orderId nvarchar(MAX)
+	--AS
+	--BEGIN
+	--	INSERT INTO [dbo].Payments(PaymentId, PaymentValue, PaymentDate, PaymentStatus, OrderId)
+	--		VALUES(@paymentId, @paymentValue, @paymentDate,@paymentStatus,@orderId)
+	--END
 
 
 --Listar---
@@ -120,3 +120,13 @@
 	--	select * 
 	--		from [dbo].[Products] order by ProductName
 	--END
+
+--Actualizar--
+
+CREATE PROCEDURE [dbo].[UpdateOrderStatus]
+@orderId nvarchar(MAX),
+@orderStatus int
+AS
+BEGIN
+	UPDATE [dbo].Orders SET OrderStatus = @orderStatus WHERE OrderId = @orderId
+END
