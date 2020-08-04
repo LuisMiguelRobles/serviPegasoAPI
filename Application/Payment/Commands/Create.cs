@@ -51,11 +51,13 @@
             {
                 
                 var paymentStatus = _payment.AddPayment(GetPaymentRequest(request)).Result;
-                var sqlParams = new object[] {Guid.NewGuid(),request.Amount, DateTime.Now,PaymentStatus.Pending, request.OrderId};
-                var success = await _context.Database.ExecuteSqlRawAsync("RegisterPayment @p0, @p1, @p2, @p3, @p4", sqlParams) == 1;
+
+                var success = false;
 
                 if (paymentStatus.Equals("approved"))
                 {
+                    var sqlParams = new object[] { Guid.NewGuid(), request.Amount, DateTime.Now, PaymentStatus.Confirmed, request.OrderId };
+                    success = await _context.Database.ExecuteSqlRawAsync("RegisterPayment @p0, @p1, @p2, @p3, @p4", sqlParams) == 1;
                     _context.Database.ExecuteSqlRaw("UpdateOrderStatus @p0, @p1", request.OrderId, OrderStatus.Paid);
                 }
 

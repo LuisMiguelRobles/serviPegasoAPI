@@ -33,7 +33,7 @@
             {
                 var customer = await _context.Customers.SingleOrDefaultAsync(x => x.CustomerEmail == request.CustomerEmail, cancellationToken);
                 var orderId = Guid.NewGuid();
-                var sqlParams = new object[] { orderId, request.OrderTotal, DateTime.Now, OrderStatus.Preparing, customer.CustomerId };
+                var sqlParams = new object[] { orderId, request.OrderTotal, DateTime.Now, OrderStatus.Pending, customer.CustomerId };
 
                 var success = await _context.Database.ExecuteSqlRawAsync("CreateOrder @p0, @p1, @p2, @p3, @p4",
                                   sqlParams) == 1;

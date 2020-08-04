@@ -123,10 +123,27 @@
 
 --Actualizar--
 
-CREATE PROCEDURE [dbo].[UpdateOrderStatus]
-@orderId nvarchar(MAX),
-@orderStatus int
+--CREATE PROCEDURE [dbo].[UpdateOrderStatus]
+--@orderId nvarchar(MAX),
+--@orderStatus int
+--AS
+--BEGIN
+--	UPDATE [dbo].Orders SET OrderStatus = @orderStatus WHERE OrderId = @orderId
+--END
+
+
+--CREATE PROCEDURE [dbo].[UpdateDelivererStatus]
+--@delivererEmail nvarchar(MAX),
+--@orderIsAvailable bit
+--AS
+--BEGIN
+--	UPDATE [dbo].Deliverers SET DelivererIsAvailable = @orderIsAvailable WHERE DelivererEmail = @delivererEmail
+--END
+
+
+CREATE PROCEDURE [dbo].[GetAllConfirmedOrders]
+
 AS
 BEGIN
-	UPDATE [dbo].Orders SET OrderStatus = @orderStatus WHERE OrderId = @orderId
+	SELECT * FROM [dbo].Orders WHERE OrderStatus != 0;
 END

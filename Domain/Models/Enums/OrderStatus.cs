@@ -2,10 +2,11 @@
 {
     public enum OrderStatus
     {
-        Preparing,
+        Pending,
         OnTheWay,
         Delivered,
-        Paid
+        Paid, 
+        
 
     }
 }

@@ -10,6 +10,7 @@
         public string DelivererEmail { get; set; }
         public string DelivererPhoneNumber { get; set; }
         public DateTime DelivererBirthDate { get; set; }
+        public bool DelivererIsAvailable { get; set; }
         public virtual ICollection<Delivery> Deliveries { get; set; }
         
     }
