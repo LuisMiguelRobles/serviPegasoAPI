@@ -27,11 +27,12 @@
                 _context = context;
                 _userManager = userManager;
             }
-            public async Task<List<UserResponse>> Handle(Query request, CancellationToken cancellationToken)
+
+            public Task<List<UserResponse>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var usersResponse = new List<UserResponse>();
 
-                var users = await _context.Users.FromSqlRaw("GetAllUsers").ToArrayAsync(cancellationToken);
+                var users = _userManager.Users;
 
                 foreach (var user in users)
                 {
