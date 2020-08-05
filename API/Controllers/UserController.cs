@@ -5,6 +5,8 @@
     using Application.Auth.Commands;
     using Application.Auth.Queries;
     using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
+    using Application.Auth.Responses;
 
     public class UserController : BaseController
     {
@@ -34,6 +36,13 @@
         public async Task<ActionResult<User>> CurrentUser()
         {
             return await Mediator.Send(new CurrentUser.Query());
+        }
+
+
+        [HttpGet("GetAllUsers")]
+        public async Task<ActionResult<List<UserResponse>>> GetAllUsers()
+        {
+            return await Mediator.Send(new ListAllUsers.Query());
         }
 
     }

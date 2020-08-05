@@ -141,9 +141,17 @@
 --END
 
 
-CREATE PROCEDURE [dbo].[GetAllConfirmedOrders]
+--CREATE PROCEDURE [dbo].[GetAllConfirmedOrders]
 
+--AS
+--BEGIN
+--	SELECT * FROM [dbo].Orders WHERE OrderStatus != 0;
+--END
+
+
+
+CREATE PROCEDURE [dbo].[GetAllUsers]
 AS
 BEGIN
-	SELECT * FROM [dbo].Orders WHERE OrderStatus != 0;
+	select Id, UserName,Email, PhoneNumber, UserFullName, UserStatus, UserBirthDay, RoleId from [dbo].AspNetUsers;
 END
